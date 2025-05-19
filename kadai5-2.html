@@ -7,6 +7,8 @@
     <h1 id="msg">本のISBNデータを取得するAPI</h1>
     <form name="apiform"><p>
         <!-- 9784991392009 となりのとらんす少女ちゃん -->
+        <!-- 9784846119157 性別違和・性別不合へ -->
+        <!-- 9784408558356 天久鷹央の推理カルテ -->
         ISBN:<input type="text" name="isbn">
         <button type="button" id="btn1" onclick="some_api(this.form)">実行</button>
     </p></form>
@@ -20,16 +22,15 @@
             const data = await aRes.json();
 
             const title = data[0]["onix"]["DescriptiveDetail"]["TitleDetail"]["TitleElement"]["TitleText"]["content"]; //タイトル
-            const series = data[0]["onix"]["DescriptiveDetail"]["Collection"]["TitleDetail"]["TitleElement"][0]["TitleText"]["content"]; //シリーズ
-            const detail = ""//data[0]["onix"]["CollateralDetail"]["TextContent"][1]["Text"]; //紹介
             const author = data[0]["onix"]["DescriptiveDetail"]["Contributor"][0]["PersonName"]["content"]; //著者
-            const profile = data[0]["onix"]["DescriptiveDetail"]["Contributor"][0]["BiographicalNote"]; //著者プロフィール
+            let profile = data[0]["onix"]["DescriptiveDetail"]["Contributor"][0]["BiographicalNote"]; //著者プロフィール
             const release = data[0]["onix"]["PublishingDetail"]["PublishingDate"][0]["Date"]; //発売日
             const publisher = data[0]["onix"]["PublishingDetail"]["Imprint"]["ImprintName"]; //出版社
             const isbn13 = data[0]["onix"]["RecordReference"]//ISBN 13
+
+            if(profile == undefined){profile = ""}
             
-            document.getElementById("msg").innerHTML = series+" "+title
-            document.getElementById("result").innerHTML = "<h2>タイトル : "+title+"</h2><h2>シリーズ : "+series+"</h2><h2>著者 : "+author+"</h2><h2>出版社 : "+publisher+"</h2><h3>ISBN 13 : "+isbn13+"<h3></br><h2>紹介</h3><p>"+detail+"</p><br><h2>著者プロフィール</h2><h3>"+author+"</h3><p>"+profile+"</p>";
+            document.getElementById("result").innerHTML = "<h2>タイトル : "+title+"</h2><h2>著者 : "+author+"</h2><h2>出版社 : "+publisher+"</h2><h3>ISBN 13 : "+isbn13+"<h3></br><h2>著者プロフィール</h2><h3>"+author+"</h3><p>"+profile+"</p>";
             document.apiform.reset();
         }
     </script>
