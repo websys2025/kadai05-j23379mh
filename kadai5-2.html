@@ -4,9 +4,9 @@
     <title>演習課題5-2：外部APIの呼び出しテスト</title>
 </head>
 <body>
-    <h1 id="msg">何かのAPI</h1>
+    <h1 id="msg">本のISBNデータを取得するAPI</h1>
     <form name="apiform"><p>
-        何かのフォーム：<input type="text" name="form_data">
+        ISBN:<input type="text" name="isbn">
         <button type="button" id="btn1" onclick="some_api(this.form)">実行</button>
     </p></form>
     
@@ -14,7 +14,10 @@
     <script>
         async function some_api(myForm) {
             // ここにコードを書く
-            document.getElementById("result").innerHTML += myForm.form_data.value+"<br />";
+            const endpoint = "https://api.openbd.jp/v1/get";
+            const aRes = await fetch(endpoint+"?isbn="+myForm.isbn.value);
+            const data = await aRes.json();
+            document.getElementById("result").innerHTML += +"<br />";
             document.apiform.reset();
         }
     </script>
